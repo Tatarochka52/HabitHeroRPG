@@ -109,7 +109,7 @@ export class UserService {
         }
 
         return {
-            access_token: await this.jwtService.sign(payload)
+            access_token: await this.jwtService.signAsync(payload)
         }
     }
 }

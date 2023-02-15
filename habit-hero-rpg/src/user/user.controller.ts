@@ -4,10 +4,13 @@ import {
     UsePipes,
     ValidationPipe,
 } from "@nestjs/common";
-import { Body, Get, HttpCode, Post, Query } from "@nestjs/common/decorators";
+import { Body, Get, HttpCode, Post, Query, UseGuards } from "@nestjs/common/decorators";
+import { ApiTags } from '@nestjs/swagger';
 import * as dto from "./dto/index.dto";
+import { JwtAuthGuard } from "./guards/jwt.guard";
 import { UserService } from "./user.service";
 
+@ApiTags("user")
 @Controller("user")
 export class UserController {
     constructor(private readonly userService: UserService) {}
@@ -31,7 +34,7 @@ export class UserController {
     @Post("update")
     @HttpCode(HttpStatus.OK)
     async updatePersonalData(@Body() updateUserDto: dto.UpdateUserDto, @Query() id: string) {
-      this.userService.update(id["id"], updateUserDto);
+        this.userService.update(id["id"], updateUserDto);
     }
 
     /**
@@ -41,8 +44,14 @@ export class UserController {
     @UsePipes(new ValidationPipe())
     @Post("login")
     async authorization(@Body() { login, password }: dto.AuthorizationUserDto) {
-      const user = await this.userService.validateUser(login, password);
+        const user = await this.userService.validateUser(login, password);
 
-      return this.userService.login(user.email);
+        return this.userService.login(user.email);
     }
+
+//     @UseGuards(JwtAuthGuard)
+//     @Get('test')
+//     async CheckJwt() {
+//         return "ok";
+//     }
 }
