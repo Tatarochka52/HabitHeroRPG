@@ -1,5 +1,4 @@
-import { IsString, IsNumber, Min, Max } from 'class-validator';
-
+import { IsString, IsNumber, ValidateIf } from 'class-validator';
 export class CreateUserDto {
     @IsString()
     readonly username: string;
@@ -8,7 +7,8 @@ export class CreateUserDto {
     readonly email: string;
 
     @IsNumber()
-    readonly birthday: bigint;
+    @ValidateIf((object, value) => value !== null)
+    readonly birthday?: bigint | null;
 
     @IsString()
     readonly password: string;

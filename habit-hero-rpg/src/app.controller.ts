@@ -1,17 +1,15 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { StartAppModificatorDto } from './dto/start-app.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   /**
-   * SignIn or SignUp to app
-   * @param mod string 
+   * Redirect to React start page
   */
   @Get()
-  start(@Query() startAppModificatorDto?: StartAppModificatorDto) {
-    return this.appService.start(startAppModificatorDto);
+  start(@Res() res) {
+    return this.appService.redirectToRest(res);
   }
 }
